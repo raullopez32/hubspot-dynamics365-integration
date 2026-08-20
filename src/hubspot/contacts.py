@@ -47,3 +47,32 @@ class HubSpotContacts:
             contacts.extend(data.get("results", []))
 
         return contacts
+
+    def search_by_email(self, email: str) -> list[dict]:
+        data = self.client.request(
+            "POST",
+            f"crm/objects/{self.api_version}/contacts/search",
+            json={
+                "filterGroups": [
+                    {
+                        "filters": [
+                            {
+                                "propertyName": "email",
+                                "operator": "EQ",
+                                "value": email,
+                            }
+                        ]
+                    }
+                ],
+                "limit": 2,
+                "properties": ["email"],
+            },
+        )
+        return data.get("results", [])
+
+    def update(self, contact_id: str, properties: dict) -> dict:
+        return self.client.request(
+            "PATCH",
+            f"crm/objects/{self.api_version}/contacts/{contact_id}",
+            json={"properties": properties},
+        )
