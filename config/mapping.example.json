@@ -1,0 +1,31 @@
+{
+  "entities": {
+    "opportunity": {
+      "target_entity": "opportunities",
+      "id_field": "opportunityid",
+      "contact_bind_field": "customerid_contact@odata.bind",
+      "contact_entity": "contacts",
+      "key_fields": [
+        "demo_programcode",
+        "demo_periodcode"
+      ],
+      "fields": [
+        {
+          "source": "opportunity_name",
+          "target": "name",
+          "required": true
+        },
+        {
+          "source": "program_code",
+          "target": "demo_programcode",
+          "required": true
+        },
+        {
+          "source": "period_code",
+          "target": "demo_periodcode",
+          "required": true
+        }
+      ]
+    }
+  }
+}
