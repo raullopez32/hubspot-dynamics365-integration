@@ -6,6 +6,7 @@ COPY pyproject.toml ./
 RUN pip install --no-cache-dir .
 
 COPY src ./src
+COPY config ./config
 
 ENV PORT=8080
 
