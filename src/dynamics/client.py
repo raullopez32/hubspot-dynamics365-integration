@@ -4,6 +4,8 @@ from typing import Any
 
 import requests
 
+from src.http_client import build_retry_session
+
 from .auth import DataverseAuth
 
 
@@ -18,7 +20,7 @@ class DataverseClient:
         self.auth = auth
         self.api_version = api_version.strip("/")
         self.timeout = timeout
-        self.session = session or requests.Session()
+        self.session = session or build_retry_session()
         self.session.headers.update({
             "Accept": "application/json",
             "Content-Type": "application/json",
