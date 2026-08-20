@@ -4,6 +4,8 @@ from typing import Any
 
 import requests
 
+from src.http_client import build_retry_session
+
 
 class HubSpotClient:
     def __init__(
@@ -18,7 +20,7 @@ class HubSpotClient:
 
         self.base_url = base_url.rstrip("/")
         self.timeout = timeout
-        self.session = session or requests.Session()
+        self.session = session or build_retry_session()
         self.session.headers.update({
             "Authorization": f"Bearer {access_token}",
             "Content-Type": "application/json",
