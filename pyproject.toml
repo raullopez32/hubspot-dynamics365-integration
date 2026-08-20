@@ -5,6 +5,7 @@ description = "HubSpot and Microsoft Dynamics 365 / Dataverse integration servic
 requires-python = ">=3.11"
 dependencies = [
     "Flask>=3.0,<4.0",
+    "google-cloud-storage>=2.18,<4.0",
     "gunicorn>=22.0,<24.0",
     "msal>=1.31,<2.0",
     "python-dotenv>=1.0,<2.0",

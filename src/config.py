@@ -12,6 +12,10 @@ class Settings:
     dynamics_base_url: str | None
     dynamics_api_version: str
     mapping_file: str
+    sync_mode: str
+    checkpoint_bucket: str | None
+    checkpoint_blob: str
+    dynamics_integration_user_id: str | None
 
     @classmethod
     def from_env(cls) -> "Settings":
@@ -24,6 +28,10 @@ class Settings:
             dynamics_base_url=os.getenv("DYNAMICS_BASE_URL"),
             dynamics_api_version=os.getenv("DYNAMICS_API_VERSION", "v9.2"),
             mapping_file=os.getenv("MAPPING_FILE", "config/mapping.example.json"),
+            sync_mode=os.getenv("SYNC_MODE", "forward").lower(),
+            checkpoint_bucket=os.getenv("CHECKPOINT_BUCKET"),
+            checkpoint_blob=os.getenv("CHECKPOINT_BLOB", "checkpoints/reverse-contacts.txt"),
+            dynamics_integration_user_id=os.getenv("DYNAMICS_INTEGRATION_USER_ID"),
         )
 
     def validate(self) -> None:
@@ -35,6 +43,12 @@ class Settings:
             "DYNAMICS_CLIENT_SECRET": self.dynamics_client_secret,
             "DYNAMICS_BASE_URL": self.dynamics_base_url,
         }
+        if self.sync_mode not in {"forward", "bidirectional"}:
+            raise ValueError("SYNC_MODE must be forward or bidirectional")
+        if self.sync_mode == "bidirectional":
+            required["CHECKPOINT_BUCKET"] = self.checkpoint_bucket
+            required["DYNAMICS_INTEGRATION_USER_ID"] = self.dynamics_integration_user_id
+
         missing = [name for name, value in required.items() if not value]
         if missing:
             raise ValueError(f"Missing settings: {', '.join(missing)}")

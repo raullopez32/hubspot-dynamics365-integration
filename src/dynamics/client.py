@@ -35,10 +35,11 @@ class DataverseClient:
     def request(self, method: str, path: str, **kwargs: Any) -> dict[str, Any]:
         headers = dict(kwargs.pop("headers", {}))
         headers["Authorization"] = f"Bearer {self.auth.get_access_token()}"
+        url = path if path.startswith(("https://", "http://")) else f"{self.base_url}/{path.lstrip('/')}"
 
         response = self.session.request(
             method,
-            f"{self.base_url}/{path.lstrip('/')}",
+            url,
             headers=headers,
             timeout=kwargs.pop("timeout", self.timeout),
             **kwargs,

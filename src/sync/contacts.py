@@ -77,7 +77,21 @@ class ContactSync:
         payload = to_dataverse_payload(contact)
 
         if matches:
-            contact_id = matches[0]["contactid"]
+            current = matches[0]
+            contact_id = current["contactid"]
+            unchanged = (
+                current.get("firstname") == contact.firstname
+                and current.get("lastname") == contact.lastname
+                and normalize_email(current.get("emailaddress1")) == contact.email
+                and normalize_phone(current.get("mobilephone")) == contact.mobilephone
+            )
+            if unchanged:
+                return {
+                    "source_id": contact.source_id,
+                    "status": "unchanged",
+                    "target_id": contact_id,
+                }
+
             self.client.request("PATCH", f"contacts({contact_id})", json=payload)
             return {
                 "source_id": contact.source_id,
@@ -106,7 +120,7 @@ class ContactSync:
             "GET",
             "contacts",
             params={
-                "$select": "contactid,emailaddress1,mobilephone",
+                "$select": "contactid,firstname,lastname,emailaddress1,mobilephone",
                 "$filter": f"{field} eq '{escaped}'",
                 "$top": 2,
             },
