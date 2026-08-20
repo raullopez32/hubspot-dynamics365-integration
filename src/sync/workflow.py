@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 from collections import Counter
 
 from src.hubspot.contacts import HubSpotContacts
@@ -7,6 +8,9 @@ from src.mapping.mapper import PropertyMapper
 
 from .contacts import ContactSync, from_hubspot
 from .opportunities import OpportunitySync
+
+
+logger = logging.getLogger(__name__)
 
 
 class SyncWorkflow:
@@ -24,8 +28,10 @@ class SyncWorkflow:
         self.opportunity_mapper = PropertyMapper(opportunities.config)
 
     def run(self, list_id: str) -> dict:
+        logger.info("Starting synchronization")
         contact_ids = self.hubspot.list_members(list_id)
         if not contact_ids:
+            logger.info("No contacts found for synchronization")
             return {"contacts": {}, "opportunities": {}, "processed": 0}
 
         properties = list(dict.fromkeys(
@@ -52,11 +58,13 @@ class SyncWorkflow:
                 )
             )
 
-        return {
+        result = {
             "contacts": self._count(contact_results),
             "opportunities": self._count(opportunity_results),
             "processed": len(source_contacts),
         }
+        logger.info("Synchronization completed: %s", result)
+        return result
 
     @staticmethod
     def _count(results: list[dict]) -> dict[str, int]:
