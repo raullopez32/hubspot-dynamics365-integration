@@ -22,7 +22,7 @@ class HubSpotContacts:
 
             data = self.client.request(
                 "GET",
-                f"crm/lists/{self.api_version}/{list_id}/memberships",
+                f"crm/lists/{self.api_version}/{list_id}/memberships/join-order",
                 params=params,
             )
             members.extend(str(item["recordId"]) for item in data.get("results", []))
