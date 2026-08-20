@@ -5,7 +5,11 @@ from collections.abc import Callable
 from flask import Flask, jsonify
 
 from src.config import Settings
+from src.logging_config import configure_logging
 from src.sync.factory import build_sync_workflow
+
+
+configure_logging()
 
 
 def create_app(
