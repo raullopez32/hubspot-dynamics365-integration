@@ -9,10 +9,8 @@ from .client import DataverseClient
 
 @dataclass(frozen=True)
 class BatchRequest:
-    method: str
     path: str
     content_id: str
-    body: str | None = None
 
 
 class DataverseBatch:
@@ -46,11 +44,9 @@ class DataverseBatch:
                 "Content-Transfer-Encoding: binary",
                 f"Content-ID: {item.content_id}",
                 "",
-                f"{item.method.upper()} {self.client.base_url}/{item.path.lstrip('/')} HTTP/1.1",
+                f"GET {self.client.base_url}/{item.path.lstrip('/')} HTTP/1.1",
                 "Accept: application/json",
-                "Content-Type: application/json",
                 "",
-                item.body or "",
             ])
         parts.extend([f"--{boundary}--", ""])
         return "\r\n".join(parts)
