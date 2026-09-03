@@ -65,7 +65,7 @@ class HubSpotContacts:
                     }
                 ],
                 "limit": 2,
-                "properties": ["firstname", "lastname", "email", "phone"],
+                "properties": ["firstname", "lastname", "email", "mobilephone"],
             },
         )
         return data.get("results", [])

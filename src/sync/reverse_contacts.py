@@ -79,7 +79,7 @@ class ReverseContactSync:
             "firstname": contact.firstname,
             "lastname": contact.lastname,
             "email": contact.email,
-            "phone": contact.mobilephone,
+            "mobilephone": contact.mobilephone,
         }
         properties = {key: value for key, value in properties.items() if value not in (None, "")}
 
@@ -87,7 +87,7 @@ class ReverseContactSync:
             normalize_email(current.get(key)) == normalize_email(value)
             if key == "email"
             else normalize_phone(current.get(key)) == normalize_phone(value)
-            if key == "phone"
+            if key == "mobilephone"
             else current.get(key) == value
             for key, value in properties.items()
         )

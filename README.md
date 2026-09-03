@@ -214,4 +214,4 @@ Current limitations include:
 
 ## Project provenance
 
-The original enterprise integration was developed in 2025. This repository is a later clean-room portfolio reconstruction based on the original implementation and technical documentation, with proprietary business logic, credentials, customer data, and organization-specific schema removed.
+The original enterprise integration was developed in 2025. This repository is a later sanitized portfolio reconstruction based on the original implementation and technical documentation, with proprietary business logic, credentials, customer data, and organization-specific schema removed.

@@ -74,7 +74,15 @@ def test_existing_hubspot_contact_is_updated():
     result = sync.sync(contact)
 
     assert result["status"] == "updated"
-    hubspot.update.assert_called_once()
+    hubspot.update.assert_called_once_with(
+        "hs-1",
+        {
+            "firstname": "Raul",
+            "lastname": "Lopez",
+            "email": "raul@example.com",
+            "mobilephone": "528112345678",
+        },
+    )
 
 
 def test_unchanged_hubspot_contact_is_not_written():
@@ -85,7 +93,7 @@ def test_unchanged_hubspot_contact_is_not_written():
             "firstname": "Raul",
             "lastname": "Lopez",
             "email": "RAUL@example.com",
-            "phone": "+52 81 1234 5678",
+            "mobilephone": "+52 81 1234 5678",
         },
     }]
     sync = ReverseContactSync(mock.Mock(), hubspot)
