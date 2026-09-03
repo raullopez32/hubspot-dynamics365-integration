@@ -25,3 +25,6 @@ jobs:
 
       - name: Test
         run: pytest
+
+      - name: Build container
+        run: docker build -t hubspot-dynamics365-integration:ci .
